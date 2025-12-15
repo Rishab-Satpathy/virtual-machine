@@ -7,15 +7,21 @@ using namespace std;
 
 enum class opcode
 {
+    //basic calculator stuff
     PUSH,
     POP, 
     ADD,
-    POINTER, 
     MUL, 
     DIV, 
     SUB,
+    //jumping stuff
+    POINTER, 
     JZ,
-    JNZ, 
+    JNZ,
+    //comparission stuff
+    EQ,
+    LT,
+    GT,
     HALT, 
 };
 
@@ -166,6 +172,8 @@ void execution(const vector <instruction>& program)
                 ip++;
             }
             break;
+            
+//conditional jumps here peek and pop the value from the stack thats present
 
             case opcode::JZ:
             {
@@ -225,7 +233,51 @@ void execution(const vector <instruction>& program)
             break;
             }
 
+//execution for comparission commands
+            case opcode::EQ:
+            {
+                if(stack.size()<2)
+                {
+                    cout<<"invalid stack size";
+                    state = ERROR;
+                    return;
+                }
+                int a = stack.back(); stack.pop_back();
+                int b = stack.back(); stack.pop_back();
+                stack.push_back(a == b ? 1 : 0);
+                ip++;
+                break;
+            }
 
+            case opcode::GT:
+            {
+                if(stack.size()<2)
+                {
+                    cout<<"invalid stack size";
+                    state = ERROR;
+                    return;
+                }
+                int a = stack.back(); stack.pop_back();
+                int b = stack.back(); stack.pop_back();
+                stack.push_back(a > b ? 1 : 0);
+                ip++;
+                break;
+            }
+
+            case opcode::LT:
+             {
+                if(stack.size()<2)
+                {
+                    cout<<"invalid stack size";
+                    state = ERROR;
+                    return;
+                }
+                int a = stack.back(); stack.pop_back();
+                int b = stack.back(); stack.pop_back();
+                stack.push_back(a < b ? 1 : 0);
+                ip++;
+                break;
+            }
 
         }
     }
@@ -357,6 +409,19 @@ else if (source[i] == "JNZ")
     }
 }
 
+//comparission parses
+    else if(source[i] == "EQ")
+    {
+        program.push_back({opcode::EQ,0,false});
+    }
+    else if(source[i] == "GT")
+    {
+        program.push_back({opcode::GT,0,false});
+    }
+    else if(source[i] == "LT")
+    {
+        program.push_back({opcode::LT,0,false});
+    }
 
     }
     if (state != EXECUTING)
