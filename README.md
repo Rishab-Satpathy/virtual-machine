@@ -17,7 +17,7 @@ use stack based or register based depending on the needs of the virtual machine,
 
 CHIP 8 emulator
 
-this emulator has 16 registries which can each be used to store and load data, the 16th registry in this emulator is known as the flag registry which is used in various other functions to flag whether a carry over in case of addition or a negative sign in case of subtraction or many other things which can't generally be expressed by the system's limitation. it uses SDL for both input and graphics and audio buffering mechanisms. The emulator has its own CPU cycle which ranges from 50-100 mhz and a timer clock which runs on 60hz mimicking a wall clock using the chrono library.
+this emulator has 16 registries which can each be used to store and load data, the 16th registry in this emulator is known as the flag registry which is used in various other functions to flag whether a carry over in case of addition or a negative sign in case of subtraction or many other things which can't generally be expressed by the system's limitation. it uses SDL for both input and graphics and audio buffering mechanisms. The emulator has its own CPU cycle which ranges from 500 to 1000 instructions per second and a timer clock which runs on 60hz mimicking a wall clock using the chrono library.
 
 there is I variable which is used as a memory address pointer in the given emulator.
 each instruction in the emulator is of a combined size of 16 bits which includes the functions indexing and the other operands required to utilise the function.
@@ -28,6 +28,10 @@ The built-in fontset is stored at address 0x50.
 Programs begin at address 0x200 and may store both instructions and sprite data in program memory.
 The index register I is used to point to sprite data when drawing.
 Stack and registers are separate from main memory.
+
+0x000–0x1FF  Reserved (interpreter)
+0x050–0x09F  Built-in fontset (80 bytes)
+0x200–0xFFF  Program memory (code + sprites + data)
 
 The I variable is used to store "sprite" memory, sprite is used to display graphics in early systems "A small bitmap (pixel pattern) stored in memory that can be drawn onto the screen. " the sprite in Chip 8 is bound to 8 bits due to hardware complexities, each bit of the 8 bit wide sprite has separate data for each column/bit and each bit represents a separate pixel.
 
